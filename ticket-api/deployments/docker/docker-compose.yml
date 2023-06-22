@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: ../../.
+      dockerfile: ./deployments/docker/web.Dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${DEBUG_PORT}:2345
+    volumes:
+      - ../../.:/ticket_api
+    container_name: ticket-api
+    security_opt:
+      - seccomp:unconfined
+    depends_on:
+      - database
+
+  database:
+    build:
+      context: ../../.
+      dockerfile: ./deployments/docker/db.Dockerfile
+    environment:
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+    container_name: ticket-db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+        "--authentication-policy=mysql_native_password",
+      ]
+    ports:
+      - 33068:127.0.0.1:3306
+    volumes:
+      - ticket_db:/var/lib/mysql
+
+
+  adminer:
+    image: adminer
+    ports:
+      - ${ADMINER_PORT}:8080
+    depends_on:
+      - database
+
+volumes:
+  ticket_db:

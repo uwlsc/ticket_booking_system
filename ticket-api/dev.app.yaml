@@ -1,0 +1,8 @@
+runtime: go116
+service: api-dev
+entrypoint: main app:serve
+instance_class: F1
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 1

@@ -1,0 +1,9 @@
+.env
+.idea/
+__debug_bin
+main
+
+config/serviceAccountKey.json
+.vscode
+
+serviceAccountKey.json
