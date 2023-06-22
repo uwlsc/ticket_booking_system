@@ -37,7 +37,7 @@ services:
         "--authentication-policy=mysql_native_password",
       ]
     ports:
-      - 33068:127.0.0.1:3306
+      - 3306:3306
     volumes:
       - ticket_db:/var/lib/mysql
 

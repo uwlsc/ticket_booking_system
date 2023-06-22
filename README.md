@@ -1,7 +1,7 @@
 Running API
 
 - Go to ticket-api folder
-    run: docker-comppose up --build
+    run: make up
 
 Running Saff app
 
